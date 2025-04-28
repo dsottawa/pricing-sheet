@@ -71,14 +71,14 @@ def generate_pdfs(entries, image_paths, logo_path, output_dir, template, merge):
         # Left Column: Price Section
         c.setFont('Helvetica-Bold', 16)
         c.setFillColor(HexColor('#000000'))
-        c.drawString(40, 65, "Price:")
+        c.drawString(40, 85, "Price:")
 
         c.setFillColor(HexColor('#FFC107'))  # Yellow price banner
         c.rect(40, 40, 220, 40, fill=1, stroke=0)
 
         c.setFillColor(HexColor('#000000'))
         c.setFont('Helvetica-Bold', 22)
-        c.drawCentredString(150, 30, f"${entry['Price']}")
+        c.drawCentredString(150, 55, f"${entry['Price']}")
 
         # Right Column: Color Swatch
         c.setFont('Helvetica-Bold', 16)
@@ -103,7 +103,7 @@ def generate_pdfs(entries, image_paths, logo_path, output_dir, template, merge):
             c.drawImage(qr_path, 700, 20, width=60, height=60)
             c.setFont('Helvetica', 10)
             c.setFillColor(HexColor('#000000'))
-            #c.drawString(760, 40)
+            #c.drawString(760, 40, "SEE MORE")
             os.remove(qr_path)
 
         # Logo (Optional - above QR Code if needed)
