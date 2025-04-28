@@ -121,10 +121,10 @@ def generate_pdfs(entries, image_paths, logo_path, output_dir, template, merge):
             qr = qrcode.make(entry['URL'])
             qr_path = os.path.join(output_dir, 'temp_qr.png')
             qr.save(qr_path)
-            c.drawImage(qr_path, 700, 20, width=60, height=60)
+            c.drawImage(qr_path, 740, 40, width=60, height=60)
             c.setFont('Helvetica', 10)
             c.setFillColor(HexColor('#000000'))
-            c.drawString(760, 40, "SEE MORE")
+            #c.drawString(760, 40, "SEE MORE")
             os.remove(qr_path)
 
         # Logo (Optional - near QR)
