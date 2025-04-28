@@ -103,7 +103,7 @@ def generate_pdfs(entries, image_paths, logo_path, output_dir, template, merge):
             c.drawImage(qr_path, 700, 20, width=60, height=60)
             c.setFont('Helvetica', 10)
             c.setFillColor(HexColor('#000000'))
-            c.drawString(760, 40)
+            #c.drawString(760, 40)
             os.remove(qr_path)
 
         # Logo (Optional - above QR Code if needed)
