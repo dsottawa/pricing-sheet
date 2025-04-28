@@ -1,9 +1,19 @@
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 import shutil, os, csv
 from app.pdf_generator import generate_pdfs
 
 app = FastAPI()
+
+# Enable CORS to allow React frontend to call backend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Or specify ["https://your-frontend.vercel.app"] for stricter security
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 UPLOADS_DIR = 'uploads'
 OUTPUTS_DIR = 'outputs'
