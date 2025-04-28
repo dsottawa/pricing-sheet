@@ -7,7 +7,7 @@
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import FileResponse
 import shutil, os, csv
-from app.pdf_generator import generate_pdfs
+from pdf_generator import generate_pdfs
 
 app = FastAPI()
 
