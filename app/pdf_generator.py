@@ -55,31 +55,35 @@ def generate_pdfs(entries, image_paths, logo_path, output_dir, template, merge):
         if img_path:
             c.drawImage(img_path, 196, 190, width=400, height=140, preserveAspectRatio=True, anchor='c')
 
-        # Left Column: Features
+       # Left Column: Features
         c.setFont('Helvetica-Bold', 16)
         c.setFillColor(HexColor('#000000'))
         c.drawString(40, 150, "Features:")
-    
+
         c.setFont('Helvetica', 14)
         feature_y = 130
         for feat in ['Feature 1', 'Feature 2', 'Feature 3']:
             feature = entry.get(feat, '')
             if feature:
                 c.drawString(60, feature_y, f"• {feature}")
-            feature_y -= 20
-    
-        # Left Column: Price Section (Moved Down Further)
+                feature_y -= 20
+
+        # --- Add Bigger Vertical Gap After Features ---
+        
+        # Left Column: Price Section (Pushed Down Further)
         c.setFont('Helvetica-Bold', 16)
         c.setFillColor(HexColor('#000000'))
-        c.drawString(40, 90, "Price:")
-    
-        # Bigger Yellow Price Box
-        c.setFillColor(HexColor('#FFC107'))
-        c.rect(40, 30, 250, 50, fill=1, stroke=0)  # Wider and lower
+        c.drawString(40, 75, "Price:")
         
+        # Draw Yellow Price Box (Lowered)
+        c.setFillColor(HexColor('#FFC107'))
+        c.rect(40, 20, 260, 45, fill=1, stroke=0)  # Bigger and lower
+        
+        # Draw Price Value (Centered nicely inside box)
         c.setFillColor(HexColor('#000000'))
-        c.setFont('Helvetica-Bold', 26)
-        c.drawCentredString(165, 45, f"${entry['Price']}")
+        c.setFont('Helvetica-Bold', 24)
+        c.drawCentredString(170, 38, f"${entry['Price']}")
+
 
         # Right Column: Color Swatch
         c.setFont('Helvetica-Bold', 16)
