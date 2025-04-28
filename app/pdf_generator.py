@@ -78,7 +78,7 @@ def generate_pdfs(entries, image_paths, logo_path, output_dir, template, merge):
 
         c.setFillColor(HexColor('#000000'))
         c.setFont('Helvetica-Bold', 22)
-        c.drawCentredString(150, 50, f"${entry['Price']}")
+        c.drawCentredString(150, 30, f"${entry['Price']}")
 
         # Right Column: Color Swatch
         c.setFont('Helvetica-Bold', 16)
