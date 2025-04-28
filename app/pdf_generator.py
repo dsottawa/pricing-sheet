@@ -73,16 +73,16 @@ def generate_pdfs(entries, image_paths, logo_path, output_dir, template, merge):
         # Left Column: Price Section (Pushed Down Further)
         c.setFont('Helvetica-Bold', 16)
         c.setFillColor(HexColor('#000000'))
-        c.drawString(40, 75, "Price:")
+        c.drawString(40, 70, "Price:")
         
         # Draw Yellow Price Box (Lowered)
         c.setFillColor(HexColor('#FFC107'))
-        c.rect(40, 20, 260, 45, fill=1, stroke=0)  # Bigger and lower
+        c.rect(40, 20, 260, 40, fill=1, stroke=0)  # Bigger and lower
         
         # Draw Price Value (Centered nicely inside box)
         c.setFillColor(HexColor('#000000'))
         c.setFont('Helvetica-Bold', 24)
-        c.drawCentredString(170, 38, f"${entry['Price']}")
+        c.drawCentredString(170, 33, f"${entry['Price']}")
 
 
         # Right Column: Color Swatch
