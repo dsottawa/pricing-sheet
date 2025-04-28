@@ -71,7 +71,7 @@ def generate_pdfs(entries, image_paths, logo_path, output_dir, template, merge):
         # Left Column: Price Section
         c.setFont('Helvetica-Bold', 16)
         c.setFillColor(HexColor('#000000'))
-        c.drawString(40, 85, "Price:")
+        c.drawString(40, 75, "Price:")
 
         c.setFillColor(HexColor('#FFC107'))  # Yellow price banner
         c.rect(40, 40, 220, 40, fill=1, stroke=0)
