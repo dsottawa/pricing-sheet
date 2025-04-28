@@ -7,7 +7,7 @@ from PyPDF2 import PdfMerger
 import zipfile
 
 def generate_pdfs(entries, image_paths, logo_path, output_dir, template, merge):
-    # Background Themes
+    # Themes for background colors
     themes = {
         'summer': '#FFF8E1',
         'fall': '#FFECB3',
@@ -16,7 +16,7 @@ def generate_pdfs(entries, image_paths, logo_path, output_dir, template, merge):
     }
     background = themes.get(template, '#FFFFFF')
 
-    # Color Mapping
+    # Color mapping for color swatches
     COLOR_MAP = {
         'red': '#FF0000',
         'black': '#000000',
@@ -33,76 +33,71 @@ def generate_pdfs(entries, image_paths, logo_path, output_dir, template, merge):
 
     for entry in entries:
         file_path = os.path.join(output_dir, f"{entry['Make']}_{entry['Model']}.pdf".replace(' ', '_'))
-        c = canvas.Canvas(file_path, pagesize=(792, 396))  # Half-Letter landscape size
+        c = canvas.Canvas(file_path, pagesize=(792, 396))  # Half-Letter landscape
 
         # Background
         c.setFillColor(HexColor(background))
         c.rect(0, 0, 792, 396, fill=1, stroke=0)
 
-        # Title
+        # Row 1: Product Name centered
         c.setFillColor(HexColor('#000000'))
-        c.setFont('Helvetica-Bold', 26)
-        c.drawString(40, 360, f"{entry['Make']} {entry['Model']}")
+        c.setFont('Helvetica-Bold', 28)
+        c.drawCentredString(396, 360, f"{entry['Make']} {entry['Model']}")
 
-        # Features
-        c.setFont('Helvetica', 16)
-        c.drawString(40, 320, "Features:")
+        # Row 2: Product Image centered
+        img_path = image_paths.get(entry['Image Filename'])
+        if img_path:
+            c.drawImage(img_path, 196, 190, width=400, height=150, preserveAspectRatio=True, anchor='c')
 
+        # Row 3: Two columns
+        # Left Column - Features
+        c.setFont('Helvetica-Bold', 16)
+        c.drawString(40, 170, "Features:")
         c.setFont('Helvetica', 14)
-        y = 300  # Start features higher
+        feature_y = 150
         for feat in ['Feature 1', 'Feature 2', 'Feature 3']:
             feature = entry.get(feat, '')
             if feature:
-                c.drawString(60, y, f"• {feature}")
-                y -= 20
+                c.drawString(60, feature_y, f"• {feature}")
+                feature_y -= 20
 
-        # Price Banner
+        # Left Column - Price
         c.setFillColor(HexColor('#FFC107'))
-        c.rect(40, 200, 300, 50, fill=1, stroke=0)  # Move price box lower
+        c.rect(40, 60, 200, 50, fill=1, stroke=0)
         c.setFillColor(HexColor('#000000'))
-        c.setFont('Helvetica-Bold', 24)
-        c.drawCentredString(190, 215, f"${entry['Price']}")
+        c.setFont('Helvetica-Bold', 22)
+        c.drawCentredString(140, 75, f"${entry['Price']}")
 
-        # Colour Swatch
-        c.setFillColor(HexColor('#000000'))
-        c.setFont('Helvetica', 16)
-        c.drawString(40, 150, "Colour:")
-
+        # Right Column - Colors
+        c.setFont('Helvetica-Bold', 16)
+        c.drawString(520, 170, "Colour:")
         color_name = entry.get('Color', 'red').lower()
-        color_hex = COLOR_MAP.get(color_name, '#FF0000')  # Default to red
-
+        color_hex = COLOR_MAP.get(color_name, '#FF0000')
         c.setFillColor(HexColor(color_hex))
-        c.rect(140, 140, 80, 30, fill=1, stroke=0)
-
+        c.rect(620, 160, 80, 30, fill=1, stroke=0)
         c.setFillColor(HexColor('#FFFFFF'))
         c.setFont('Helvetica-Bold', 12)
-        c.drawCentredString(180, 150, color_name.upper())
+        c.drawCentredString(660, 170, color_name.upper())
 
-        # Product Image
-        img_path = image_paths.get(entry['Image Filename'])
-        if img_path:
-            c.drawImage(img_path, 420, 130, width=320, height=220, preserveAspectRatio=True)
-
-        # Store Logo (Corrected Position)
-        if logo_path:
-            c.drawImage(logo_path, 700, 320, width=80, height=40, preserveAspectRatio=True, mask='auto')
-
-        # QR Code
+        # Right Column - QR Code at bottom
         if entry.get('URL', '').startswith('http'):
             qr = qrcode.make(entry['URL'])
             qr_path = os.path.join(output_dir, 'temp_qr.png')
             qr.save(qr_path)
-            c.drawImage(qr_path, 420, 40, width=50, height=50)
+            c.drawImage(qr_path, 520, 40, width=60, height=60)
             c.setFont('Helvetica', 10)
             c.setFillColor(HexColor('#000000'))
-            c.drawString(480, 60, "SEE MORE")
+            c.drawString(590, 60, "SEE MORE")
             os.remove(qr_path)
+
+        # Logo (optional, at bottom right corner)
+        if logo_path:
+            c.drawImage(logo_path, 680, 40, width=80, height=40, preserveAspectRatio=True, mask='auto')
 
         c.showPage()
         c.save()
         pdf_paths.append(file_path)
 
-    # Merge PDFs or create ZIP
     if merge:
         merged_path = os.path.join(output_dir, 'All_Adverts.pdf')
         merger = PdfMerger()
