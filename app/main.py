@@ -1,9 +1,4 @@
-
----
-
-# 📄 `/app/main.py`
-
-```python
+python
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import FileResponse
 import shutil, os, csv
