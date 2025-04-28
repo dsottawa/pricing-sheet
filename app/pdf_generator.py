@@ -7,7 +7,7 @@ from PyPDF2 import PdfMerger
 import zipfile
 
 def generate_pdfs(entries, image_paths, logo_path, output_dir, template, merge):
-    # Themes for seasonal backgrounds
+    # Background Themes
     themes = {
         'summer': '#FFF8E1',
         'fall': '#FFECB3',
@@ -16,7 +16,7 @@ def generate_pdfs(entries, image_paths, logo_path, output_dir, template, merge):
     }
     background = themes.get(template, '#FFFFFF')
 
-    # Color map for swatch handling
+    # Color Mapping
     COLOR_MAP = {
         'red': '#FF0000',
         'black': '#000000',
@@ -35,7 +35,7 @@ def generate_pdfs(entries, image_paths, logo_path, output_dir, template, merge):
         file_path = os.path.join(output_dir, f"{entry['Make']}_{entry['Model']}.pdf".replace(' ', '_'))
         c = canvas.Canvas(file_path, pagesize=(792, 396))  # Half-Letter landscape size
 
-        # Background color
+        # Background
         c.setFillColor(HexColor(background))
         c.rect(0, 0, 792, 396, fill=1, stroke=0)
 
@@ -47,8 +47,9 @@ def generate_pdfs(entries, image_paths, logo_path, output_dir, template, merge):
         # Features
         c.setFont('Helvetica', 16)
         c.drawString(40, 320, "Features:")
+
         c.setFont('Helvetica', 14)
-        y = 300
+        y = 300  # Start features higher
         for feat in ['Feature 1', 'Feature 2', 'Feature 3']:
             feature = entry.get(feat, '')
             if feature:
@@ -57,33 +58,34 @@ def generate_pdfs(entries, image_paths, logo_path, output_dir, template, merge):
 
         # Price Banner
         c.setFillColor(HexColor('#FFC107'))
-        c.rect(40, 230, 300, 50, fill=1, stroke=0)
+        c.rect(40, 200, 300, 50, fill=1, stroke=0)  # Move price box lower
         c.setFillColor(HexColor('#000000'))
         c.setFont('Helvetica-Bold', 24)
-        c.drawCentredString(190, 245, f"${entry['Price']}")
+        c.drawCentredString(190, 215, f"${entry['Price']}")
 
         # Colour Swatch
         c.setFillColor(HexColor('#000000'))
         c.setFont('Helvetica', 16)
-        c.drawString(40, 180, "Colour:")
+        c.drawString(40, 150, "Colour:")
 
         color_name = entry.get('Color', 'red').lower()
-        color_hex = COLOR_MAP.get(color_name, '#FF0000')  # Default to red if unknown
+        color_hex = COLOR_MAP.get(color_name, '#FF0000')  # Default to red
 
         c.setFillColor(HexColor(color_hex))
-        c.rect(140, 170, 80, 30, fill=1, stroke=0)
+        c.rect(140, 140, 80, 30, fill=1, stroke=0)
+
         c.setFillColor(HexColor('#FFFFFF'))
         c.setFont('Helvetica-Bold', 12)
-        c.drawCentredString(180, 180, color_name.upper())
+        c.drawCentredString(180, 150, color_name.upper())
 
         # Product Image
         img_path = image_paths.get(entry['Image Filename'])
         if img_path:
             c.drawImage(img_path, 420, 130, width=320, height=220, preserveAspectRatio=True)
 
-        # Logo
+        # Store Logo (Corrected Position)
         if logo_path:
-            c.drawImage(logo_path, 650, 300, width=100, preserveAspectRatio=True)
+            c.drawImage(logo_path, 700, 320, width=80, height=40, preserveAspectRatio=True, mask='auto')
 
         # QR Code
         if entry.get('URL', '').startswith('http'):
@@ -100,7 +102,7 @@ def generate_pdfs(entries, image_paths, logo_path, output_dir, template, merge):
         c.save()
         pdf_paths.append(file_path)
 
-    # Merge into one PDF or Zip
+    # Merge PDFs or create ZIP
     if merge:
         merged_path = os.path.join(output_dir, 'All_Adverts.pdf')
         merger = PdfMerger()
