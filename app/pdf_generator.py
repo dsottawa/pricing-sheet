@@ -87,19 +87,19 @@ def generate_pdfs(entries, image_paths, logo_path, output_dir, template, merge):
         for feat in ['Feature 1', 'Feature 2', 'Feature 3']:
             feature = entry.get(feat, '')
             if feature:
-                c.drawString(60, feature_y, f"• {feature}")
+                c.drawString(60, feature_y, f"•  {feature}")
                 feature_y -= 20
 
         # Price Section (Separated Better)
         c.setFont('Helvetica-Bold', 16)
-        c.drawString(40, 75, "Price:")
+        c.drawString(40, 70, "Price:")
 
         c.setFillColor(HexColor('#FFC107'))
-        c.rect(40, 20, 260, 45, fill=1, stroke=0)
+        c.rect(40, 20, 260, 40, fill=1, stroke=0)
 
         c.setFillColor(HexColor('#000000'))
         c.setFont('Helvetica-Bold', 24)
-        c.drawCentredString(170, 38, f"${entry['Price']}")
+        c.drawCentredString(170, 33, f"${entry['Price']}")
 
         # Right Column: Color Swatch
         c.setFont('Helvetica-Bold', 16)
